@@ -20,7 +20,7 @@ define('DB_USER', $_ENV['DB_USER'] ?? 'root');
 define('DB_PASS', $_ENV['DB_PASS'] ?? '');
 
 // ─── Site ─────────────────────────────────────────────────────────────────────
-define('SITE_URL',     rtrim($_ENV['SITE_URL']  ?? 'http://efb.local', '/'));
+define('SITE_URL',     rtrim($_ENV['SITE_URL']  ?? 'https://sg-efootball-production.up.railway.app', '/'));
 define('SITE_NAME',    $_ENV['SITE_NAME']       ?? 'Saif Jabbar');
 define('CREATOR_NAME', $_ENV['CREATOR_NAME']    ?? 'Saif Jabbar');
 
