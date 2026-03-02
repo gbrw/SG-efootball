@@ -17,11 +17,15 @@ function db(): PDO
     ];
 
     // 1) DATABASE_URL — Supabase Transaction Pooler (Vercel)
-    //    مثال: postgresql://postgres.xxxx:pass@aws-0-region.pooler.supabase.com:6543/postgres
     $dbUrl = $_ENV['DATABASE_URL'] ?? getenv('DATABASE_URL') ?: null;
 
     if ($dbUrl) {
-        $p    = parse_url($dbUrl);
+        $p = parse_url($dbUrl);
+        if (empty($p['host']) || str_contains($p['host'], '[') || str_contains($p['host'], 'REGION')) {
+            throw new RuntimeException(
+                'DATABASE_URL غير صحيح — تأكد من استبدال [REGION] بالمنطقة الحقيقية من Supabase Dashboard → Settings → Database → Connection Pooling'
+            );
+        }
         $host = $p['host'];
         $port = $p['port'] ?? 5432;
         $name = ltrim($p['path'], '/');
