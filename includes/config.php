@@ -10,17 +10,22 @@ if (file_exists($envFile)) {
     }
 }
 
-// ─── Database ─────────────────────────────────────────────────────────────────
-// على Railway يُستخدم DATABASE_URL مباشرةً (يُضبط تلقائياً).
-// محلياً يُستخدم MySQL عبر المتغيرات أدناه.
+// ─── Database — PostgreSQL (Supabase) ────────────────────────────────────────
+// على Vercel: يُستخدم DATABASE_URL (Supabase Transaction Pooler).
+// محلياً: يُستخدم DB_* من .env أو PostgreSQL محلي.
 define('DB_HOST', $_ENV['DB_HOST'] ?? 'localhost');
-define('DB_PORT', $_ENV['DB_PORT'] ?? '3306');
-define('DB_NAME', $_ENV['DB_NAME'] ?? 'sg_efootball');
-define('DB_USER', $_ENV['DB_USER'] ?? 'root');
+define('DB_PORT', $_ENV['DB_PORT'] ?? '5432');
+define('DB_NAME', $_ENV['DB_NAME'] ?? 'postgres');
+define('DB_USER', $_ENV['DB_USER'] ?? 'postgres');
 define('DB_PASS', $_ENV['DB_PASS'] ?? '');
 
+// ─── Supabase Storage ────────────────────────────────────────────────────────
+define('SUPABASE_URL',              $_ENV['SUPABASE_URL']              ?? '');
+define('SUPABASE_SERVICE_ROLE_KEY', $_ENV['SUPABASE_SERVICE_ROLE_KEY'] ?? '');
+define('SUPABASE_BUCKET',           $_ENV['SUPABASE_BUCKET']           ?? 'uploads');
+
 // ─── Site ─────────────────────────────────────────────────────────────────────
-define('SITE_URL',     rtrim($_ENV['SITE_URL']  ?? 'https://sg-efootball-production.up.railway.app', '/'));
+define('SITE_URL',     rtrim($_ENV['SITE_URL']  ?? 'https://your-project.vercel.app', '/'));
 define('SITE_NAME',    $_ENV['SITE_NAME']       ?? 'Saif Jabbar');
 define('CREATOR_NAME', $_ENV['CREATOR_NAME']    ?? 'Saif Jabbar');
 

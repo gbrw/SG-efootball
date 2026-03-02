@@ -1,7 +1,7 @@
 <?php
 /**
  * AJAX image upload endpoint.
- * Saves files to /assets/uploads/YYYY/MM/ and returns the public URL.
+ * على Vercel: يرفع الصور إلى Supabase Storage ويُرجع الرابط العام.
  */
 
 require_once dirname(__DIR__) . '/includes/config.php';
@@ -45,23 +45,43 @@ $ext = match($mimeType) {
     'image/gif'  => 'gif',
     default      => 'jpg',
 };
-$filename = bin2hex(random_bytes(10)) . '.' . $ext;
+$filename    = date('Y/m') . '/' . bin2hex(random_bytes(10)) . '.' . $ext;
+$supabaseUrl = rtrim(SUPABASE_URL, '/');
+$serviceKey  = SUPABASE_SERVICE_ROLE_KEY;
+$bucket      = SUPABASE_BUCKET;
 
-// ── Save to /assets/uploads/ ──────────────────────────────────────────────
-$uploadDir = dirname(__DIR__) . '/assets/uploads/' . date('Y/m') . '/';
-if (!is_dir($uploadDir) && !mkdir($uploadDir, 0775, true)) {
+if (!$supabaseUrl || !$serviceKey) {
     http_response_code(500);
-    echo json_encode(['error' => 'تعذّر إنشاء مجلد الرفع']);
+    echo json_encode(['error' => 'Supabase غير مضبوط. تحقق من SUPABASE_URL و SUPABASE_SERVICE_ROLE_KEY']);
     exit;
 }
 
-$destPath = $uploadDir . $filename;
-if (!move_uploaded_file($file['tmp_name'], $destPath)) {
+// ── Upload to Supabase Storage ────────────────────────────────────────────
+$uploadEndpoint = "{$supabaseUrl}/storage/v1/object/{$bucket}/{$filename}";
+$fileContent    = file_get_contents($file['tmp_name']);
+
+$ch = curl_init($uploadEndpoint);
+curl_setopt_array($ch, [
+    CURLOPT_CUSTOMREQUEST  => 'POST',
+    CURLOPT_POSTFIELDS     => $fileContent,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_HTTPHEADER     => [
+        'Authorization: Bearer ' . $serviceKey,
+        'Content-Type: ' . $mimeType,
+        'x-upsert: true',
+    ],
+]);
+$response = curl_exec($ch);
+$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
+
+if ($httpCode < 200 || $httpCode >= 300) {
+    $err = json_decode($response, true)['message'] ?? $response;
     http_response_code(500);
-    echo json_encode(['error' => 'فشل حفظ الملف']);
+    echo json_encode(['error' => 'فشل الرفع إلى Supabase Storage: ' . $err]);
     exit;
 }
 
-$publicUrl = rtrim(SITE_URL, '/') . '/assets/uploads/' . date('Y/m') . '/' . $filename;
+$publicUrl = "{$supabaseUrl}/storage/v1/object/public/{$bucket}/{$filename}";
 echo json_encode(['url' => $publicUrl]);
 exit;
