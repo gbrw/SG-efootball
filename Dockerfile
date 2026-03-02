@@ -1,24 +1,28 @@
-FROM php:8.2-apache
+FROM debian:bookworm-slim
 
-# ── Install PostgreSQL + MySQL PDO extensions ──────────────────────
-RUN apt-get update && apt-get install -y libpq-dev \
-    && docker-php-ext-install pdo pdo_pgsql pdo_mysql \
+ENV DEBIAN_FRONTEND=noninteractive
+
+# ── Install Apache + PHP 8.2 + extensions ─────────────────────────
+RUN apt-get update && apt-get install -y \
+      apache2 \
+      php8.2 \
+      php8.2-pgsql \
+      php8.2-mysql \
+      libapache2-mod-php8.2 \
+      php8.2-cli \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# ── Fix MPM: purge every loaded MPM then activate prefork only ─────
-RUN find /etc/apache2/mods-enabled -name 'mpm_*.load' -delete \
-    && find /etc/apache2/mods-enabled -name 'mpm_*.conf' -delete \
-    && cp /etc/apache2/mods-available/mpm_prefork.load /etc/apache2/mods-enabled/mpm_prefork.load \
-    && cp /etc/apache2/mods-available/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf
+# ── Enable only mod_rewrite (mpm_prefork already default) ─────────
+RUN a2enmod rewrite php8.2
 
-# ── Enable rewrite ────────────────────────────────────────────────
-RUN a2enmod rewrite
-
-# ── Allow .htaccess ───────────────────────────────────────────────
+# ── Apache config: serve from /var/www/html, allow .htaccess ──────
 RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
 
-# ── Copy files ────────────────────────────────────────────────────
+# ── Copy site files ───────────────────────────────────────────────
 COPY . /var/www/html/
-RUN chown -R www-data:www-data /var/www/html
+RUN rm -f /var/www/html/index.html \
+    && chown -R www-data:www-data /var/www/html
 
 EXPOSE 80
+
+CMD ["apache2ctl", "-D", "FOREGROUND"]
