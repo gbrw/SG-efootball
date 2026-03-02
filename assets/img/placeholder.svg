@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+  <rect width="800" height="450" fill="#1a1a2e"/>
+  <rect x="1" y="1" width="798" height="448" fill="none" stroke="#2a2a4a" stroke-width="2"/>
+  <!-- grid lines -->
+  <line x1="0" y1="150" x2="800" y2="150" stroke="#2a2a4a" stroke-width="1"/>
+  <line x1="0" y1="300" x2="800" y2="300" stroke="#2a2a4a" stroke-width="1"/>
+  <line x1="266" y1="0" x2="266" y2="450" stroke="#2a2a4a" stroke-width="1"/>
+  <line x1="533" y1="0" x2="533" y2="450" stroke="#2a2a4a" stroke-width="1"/>
+  <!-- image icon -->
+  <rect x="330" y="155" width="140" height="105" rx="8" fill="#2a2a4a"/>
+  <circle cx="358" cy="183" r="14" fill="#3a3a6a"/>
+  <polyline points="330,225 370,195 410,230 445,205 470,260 330,260"
+            fill="#3a3a6a" stroke="none"/>
+  <!-- label -->
+  <text x="400" y="300" font-family="system-ui,sans-serif" font-size="14"
+        fill="#5a5a8a" text-anchor="middle">No image</text>
+</svg>

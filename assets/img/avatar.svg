@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#1a0a2e"/>
+      <stop offset="100%" stop-color="#0d0d18"/>
+    </radialGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A855F7"/>
+      <stop offset="100%" stop-color="#22D3EE"/>
+    </linearGradient>
+    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A855F7" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#7C3AED" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#22D3EE" stop-opacity="0.8"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softGlow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <circle cx="200" cy="200" r="200" fill="url(#bg)"/>
+
+  <!-- Outer glow ring -->
+  <circle cx="200" cy="200" r="180" fill="none" stroke="url(#ringGrad)" stroke-width="2" opacity="0.6"/>
+
+  <!-- Inner decorative ring -->
+  <circle cx="200" cy="200" r="165" fill="none" stroke="#A855F7" stroke-width="0.5" stroke-dasharray="4 8" opacity="0.3"/>
+
+  <!-- Purple glow blob -->
+  <ellipse cx="200" cy="200" rx="100" ry="90" fill="#7C3AED" opacity="0.08"/>
+
+  <!-- SG initials -->
+  <text
+    x="200" y="235"
+    font-family="'Cairo','Inter','system-ui',sans-serif"
+    font-size="130"
+    font-weight="900"
+    text-anchor="middle"
+    fill="url(#textGrad)"
+    filter="url(#softGlow)"
+    letter-spacing="-4"
+  >SG</text>
+
+  <!-- Bottom label -->
+  <text
+    x="200" y="295"
+    font-family="'Cairo','Inter','system-ui',sans-serif"
+    font-size="18"
+    font-weight="600"
+    text-anchor="middle"
+    fill="#A855F7"
+    opacity="0.7"
+    letter-spacing="3"
+  >EFOOTBALL</text>
+
+  <!-- Decorative dots -->
+  <circle cx="90"  cy="200" r="3" fill="#A855F7" opacity="0.5"/>
+  <circle cx="310" cy="200" r="3" fill="#22D3EE" opacity="0.5"/>
+  <circle cx="200" cy="90"  r="3" fill="#A855F7" opacity="0.4"/>
+  <circle cx="200" cy="330" r="3" fill="#22D3EE" opacity="0.4"/>
+</svg>
