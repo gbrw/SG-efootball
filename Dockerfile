@@ -12,13 +12,20 @@ RUN apt-get update && apt-get install -y \
       php8.2-cli \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# ── Enable only mod_rewrite (mpm_prefork already default) ─────────
-RUN a2enmod rewrite php8.2
+# ── Enable mod_rewrite ────────────────────────────────────────────
+RUN a2enmod rewrite
 
-# ── Apache config: serve from /var/www/html, allow .htaccess ──────
-RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
+# ── Virtual host: index.php first, AllowOverride All ──────────────
+RUN echo '<VirtualHost *:80>\n\
+    DocumentRoot /var/www/html\n\
+    DirectoryIndex index.php index.html\n\
+    <Directory /var/www/html>\n\
+        AllowOverride All\n\
+        Require all granted\n\
+    </Directory>\n\
+</VirtualHost>' > /etc/apache2/sites-available/000-default.conf
 
-# ── Copy site files ───────────────────────────────────────────────
+# ── Copy site files, remove default Apache page ───────────────────
 COPY . /var/www/html/
 RUN rm -f /var/www/html/index.html \
     && chown -R www-data:www-data /var/www/html
