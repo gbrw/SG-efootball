@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <input type="checkbox" name="remember" value="1"
                  style="width:16px;height:16px;accent-color:var(--purple);cursor:pointer;"
                  <?= !empty($_POST['remember']) ? 'checked' : '' ?>>
-          تذكرني لمدة 30 يوماً
+          تذكرني
         </label>
 
         <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
