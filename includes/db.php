@@ -1,7 +1,8 @@
 <?php
 /**
- * PDO helper — يدعم MySQL (محلي) و PostgreSQL (Railway / Supabase)
- * إذا كان DATABASE_URL موجوداً يستخدم PostgreSQL، وإلا MySQL.
+ * PDO helper — MySQL
+ * على Railway: يستخدم MYSQL_URL تلقائياً عند إضافة MySQL plugin
+ * محلياً: يستخدم DB_* من .env
  */
 
 function db(): PDO
@@ -15,36 +16,20 @@ function db(): PDO
         PDO::ATTR_EMULATE_PREPARES   => false,
     ];
 
-    $dbUrl = $_ENV['DATABASE_URL'] ?? getenv('DATABASE_URL') ?: null;
+    // Railway MySQL plugin يولد MYSQL_URL تلقائياً
+    $mysqlUrl = $_ENV['MYSQL_URL'] ?? getenv('MYSQL_URL') ?: null;
 
-    if ($dbUrl) {
-        // PostgreSQL via DATABASE_URL (Railway / Supabase)
-        $p    = parse_url($dbUrl);
+    if ($mysqlUrl) {
+        $p    = parse_url($mysqlUrl);
         $host = $p['host'];
-        $port = $p['port'] ?? 5432;
+        $port = $p['port'] ?? 3306;
         $name = ltrim($p['path'], '/');
         $user = rawurldecode($p['user']);
         $pass = rawurldecode($p['pass'] ?? '');
-
-        // Auto-rewrite direct Supabase URL → pgBouncer pooler URL
-        // Direct:  db.{ref}.supabase.co:5432  / user: postgres
-        // Pooler:  aws-0-{region}.pooler.supabase.com:6543  / user: postgres.{ref}
-        if (preg_match('/^db\.([a-z0-9]+)\.supabase\.co$/', $host, $m)) {
-            $ref  = $m[1];
-            $host = 'aws-0-eu-central-1.pooler.supabase.com';
-            $port = 6543;
-            // prefix user with project ref if not already prefixed
-            if ($user === 'postgres') {
-                $user = 'postgres.' . $ref;
-            }
-        }
-
-        // sslmode=require + emulate_prepares for pgBouncer transaction mode
-        $dsn  = "pgsql:host={$host};port={$port};dbname={$name};sslmode=require";
-        $opts[PDO::ATTR_EMULATE_PREPARES] = true;  // required for pgBouncer transaction mode
+        $dsn  = "mysql:host={$host};port={$port};dbname={$name};charset=utf8mb4";
     } else {
-        // MySQL for local development
-        $dsn  = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4;port=' . DB_PORT;
+        // Local development via DB_* variables
+        $dsn  = 'mysql:host=' . DB_HOST . ';port=' . DB_PORT . ';dbname=' . DB_NAME . ';charset=utf8mb4';
         $user = DB_USER;
         $pass = DB_PASS;
     }
@@ -56,12 +41,4 @@ function db(): PDO
     }
 
     return $pdo;
-}
-
-/**
- * Returns true when connected to PostgreSQL (Railway/Supabase).
- */
-function isPostgres(): bool
-{
-    return db()->getAttribute(PDO::ATTR_DRIVER_NAME) === 'pgsql';
 }
