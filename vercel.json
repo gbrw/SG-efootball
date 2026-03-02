@@ -10,6 +10,14 @@
       "dest": "/assets/$1"
     },
     {
+      "src": "^/images/(.*)",
+      "dest": "/images/$1"
+    },
+    {
+      "src": "^/(.*\\.(ico|png|jpg|jpeg|svg|webp|gif|css|js|woff2?|ttf|map|txt|xml))$",
+      "dest": "/$1"
+    },
+    {
       "src": "^/(.*)",
       "dest": "/api/index.php"
     }
