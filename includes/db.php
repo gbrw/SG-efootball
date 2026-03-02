@@ -25,7 +25,21 @@ function db(): PDO
         $name = ltrim($p['path'], '/');
         $user = rawurldecode($p['user']);
         $pass = rawurldecode($p['pass'] ?? '');
-        // sslmode=require + disable_prepared_statements for pgBouncer compatibility
+
+        // Auto-rewrite direct Supabase URL → pgBouncer pooler URL
+        // Direct:  db.{ref}.supabase.co:5432  / user: postgres
+        // Pooler:  aws-0-{region}.pooler.supabase.com:6543  / user: postgres.{ref}
+        if (preg_match('/^db\.([a-z0-9]+)\.supabase\.co$/', $host, $m)) {
+            $ref  = $m[1];
+            $host = 'aws-0-eu-central-1.pooler.supabase.com';
+            $port = 6543;
+            // prefix user with project ref if not already prefixed
+            if ($user === 'postgres') {
+                $user = 'postgres.' . $ref;
+            }
+        }
+
+        // sslmode=require + emulate_prepares for pgBouncer transaction mode
         $dsn  = "pgsql:host={$host};port={$port};dbname={$name};sslmode=require";
         $opts[PDO::ATTR_EMULATE_PREPARES] = true;  // required for pgBouncer transaction mode
     } else {
