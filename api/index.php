@@ -97,7 +97,7 @@ if (preg_match('#^/([a-z]{2})/([a-z]+)/([^/]+)/?$#', $uri, $m)
 ) {
     $_GET['locale']   = $m[1];
     $_GET['category'] = $m[2];
-    $_GET['slug']     = $m[3];
+    $_GET['slug']     = urldecode($m[3]);
     chdir($root);
     require $root . '/post.php';
     exit;
