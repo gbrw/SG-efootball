@@ -4,7 +4,7 @@ require_once dirname(__DIR__) . '/includes/auth.php';
 require_once dirname(__DIR__) . '/includes/functions.php';
 
 if (isAdminLoggedIn()) {
-    header('Location: /admin/dashboard.php');
+    header('Location: /admin/dashboard');
     exit;
 }
 
@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $result = adminLogin($email, $password);
         if ($result['ok']) {
-            header('Location: /admin/dashboard.php');
+            header('Location: /admin/dashboard');
             exit;
         }
         $error = $result['error'];

@@ -26,8 +26,7 @@ try {
 }
 
 // Flash messages
-$flash = $_SESSION['flash'] ?? null;
-unset($_SESSION['flash']);
+$flash = getFlash();
 
 $pageTitle = 'Dashboard';
 include dirname(__DIR__) . '/layouts/admin-header.php';
@@ -38,7 +37,7 @@ include dirname(__DIR__) . '/layouts/admin-header.php';
     <h1><i class="fa-solid fa-gauge" style="color:var(--purple);font-size:1.3rem;"></i> لوحة التحكم</h1>
     <p><?= count($posts) ?> منشور إجمالي</p>
   </div>
-  <a href="/admin/create.php" class="btn btn-primary"><i class="fa-solid fa-pen"></i> منشور جديد</a>
+  <a href="/admin/create" class="btn btn-primary"><i class="fa-solid fa-pen"></i> منشور جديد</a>
 </div>
 
 <?php
@@ -111,7 +110,7 @@ $statsMap = [
         <?php if (empty($posts)): ?>
         <tr>
           <td colspan="6" style="text-align:center;color:var(--text-faint);padding:3rem;">
-            لا توجد منشورات بعد. <a href="/admin/create.php" style="color:var(--purple);">أضف أول منشور ←</a>
+            لا توجد منشورات بعد. <a href="/admin/create" style="color:var(--purple);">أضف أول منشور ←</a>
           </td>
         </tr>
         <?php else: ?>
@@ -138,9 +137,9 @@ $statsMap = [
               <a href="/en/<?= h($p['category']) ?>/<?= h($p['en_slug']) ?>/"
                  target="_blank" class="btn btn-ghost btn-sm" title="عرض"><i class="fa-solid fa-eye"></i></a>
               <?php endif; ?>
-              <a href="/admin/edit.php?id=<?= h($p['id']) ?>"
+              <a href="/admin/edit?id=<?= h($p['id']) ?>"
                  class="btn btn-ghost btn-sm" title="تعديل"><i class="fa-solid fa-pen-to-square"></i></a>
-              <form method="POST" action="/admin/delete.php" style="display:inline;">
+              <form method="POST" action="/admin/delete" style="display:inline;">
                 <input type="hidden" name="id" value="<?= h($p['id']) ?>">
                 <button type="submit" class="btn btn-danger btn-sm"
                   data-confirm="حذف هذا المنشور؟ لا يمكن التراجع عن هذا الإجراء."><i class="fa-solid fa-trash"></i></button>

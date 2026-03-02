@@ -66,8 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ]);
             }
 
-            $_SESSION['flash'] = ['type' => 'success', 'msg' => 'تم نشر المنشور بنجاح'];
-            header('Location: /admin/dashboard.php');
+            setFlash('success', 'تم نشر المنشور بنجاح');
+            header('Location: /admin/dashboard');
             exit;
 
         } catch (Throwable $e) {
@@ -86,7 +86,7 @@ include dirname(__DIR__) . '/layouts/admin-header.php';
     <h1><i class="fa-solid fa-pen" style="color:var(--purple);font-size:1.2rem;"></i> منشور جديد</h1>
     <p>أضف المحتوى بالعربية والإنجليزية</p>
   </div>
-  <a href="/admin/dashboard.php" class="btn btn-ghost btn-sm"><i class="fa-solid fa-arrow-right"></i> رجوع</a>
+  <a href="/admin/dashboard" class="btn btn-ghost btn-sm"><i class="fa-solid fa-arrow-right"></i> رجوع</a>
 </div>
 
 <?php if (!empty($errors)): ?>
@@ -225,7 +225,7 @@ include dirname(__DIR__) . '/layouts/admin-header.php';
   <!-- Submit -->
   <div style="display:flex;align-items:center;gap:1rem;">
     <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> نشر المنشور</button>
-    <a href="/admin/dashboard.php" class="btn btn-ghost">إلغاء</a>
+    <a href="/admin/dashboard" class="btn btn-ghost">إلغاء</a>
   </div>
 
 </form>

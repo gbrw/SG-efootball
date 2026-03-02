@@ -7,7 +7,7 @@ requireAdmin();
 
 $postId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 if (!$postId) {
-    header('Location: /admin/dashboard.php');
+    header('Location: /admin/dashboard');
     exit;
 }
 
@@ -23,8 +23,8 @@ $stmt->execute([':id' => $postId]);
 $rows = $stmt->fetchAll();
 
 if (!$rows) {
-    $_SESSION['flash'] = ['type' => 'error', 'msg' => 'المنشور غير موجود.'];
-    header('Location: /admin/dashboard.php');
+    setFlash('error', 'المنشور غير موجود.');
+    header('Location: /admin/dashboard');
     exit;
 }
 
@@ -97,8 +97,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ]);
             }
 
-            $_SESSION['flash'] = ['type' => 'success', 'msg' => 'تم تحديث المنشور بنجاح'];
-            header('Location: /admin/dashboard.php');
+            setFlash('success', 'تم تحديث المنشور بنجاح');
+            header('Location: /admin/dashboard');
             exit;
 
         } catch (Throwable $e) {
@@ -117,7 +117,7 @@ include dirname(__DIR__) . '/layouts/admin-header.php';
     <h1><i class="fa-solid fa-pen-to-square" style="color:var(--purple);font-size:1.2rem;"></i> تعديل المنشور <span style="color:var(--text-faint);font-size:.75em;">#<?= $postId ?></span></h1>
     <p>تحديث المحتوى بالعربية والإنجليزية</p>
   </div>
-  <a href="/admin/dashboard.php" class="btn btn-ghost btn-sm"><i class="fa-solid fa-arrow-right"></i> رجوع</a>
+  <a href="/admin/dashboard" class="btn btn-ghost btn-sm"><i class="fa-solid fa-arrow-right"></i> رجوع</a>
 </div>
 
 <?php if (!empty($errors)): ?>
@@ -257,7 +257,7 @@ include dirname(__DIR__) . '/layouts/admin-header.php';
   <!-- Submit -->
   <div style="display:flex;align-items:center;gap:1rem;">
     <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> حفظ التغييرات</button>
-    <a href="/admin/dashboard.php" class="btn btn-ghost">إلغاء</a>
+    <a href="/admin/dashboard" class="btn btn-ghost">إلغاء</a>
   </div>
 
 </form>

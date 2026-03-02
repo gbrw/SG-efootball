@@ -38,10 +38,4 @@ define('ADMIN_PASSWORD', $_ENV['ADMIN_PASSWORD'] ?? '');
 define('LOCALES',    ['ar', 'en']);
 define('CATEGORIES', ['news', 'formations', 'upgrades', 'leaks']);
 
-// ─── Session ─────────────────────────────────────────────────────────────────
-if (session_status() === PHP_SESSION_NONE) {
-    session_set_cookie_params(['httponly' => true, 'samesite' => 'Lax']);
-    session_start();
-}
-
 require_once __DIR__ . '/db.php';

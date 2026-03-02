@@ -17,7 +17,7 @@
           <a href="https://x.com/SG_Efootball1"             class="social-btn social-btn-x"  target="_blank" rel="noopener" title="X / Twitter"><i class="fa-brands fa-x-twitter"></i></a>
           <a href="https://www.instagram.com/sg_efootball1/" class="social-btn social-btn-ig" target="_blank" rel="noopener" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
           <a href="https://www.tiktok.com/@sg_efootball1"   class="social-btn social-btn-tt" target="_blank" rel="noopener" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
-          <a href="https://discord.gg/2gEVV3pp"             class="social-btn social-btn-dc" target="_blank" rel="noopener" title="Discord"><i class="fa-brands fa-discord"></i></a>
+          <a href="https://discord.gg/qXz85w3Hyc"             class="social-btn social-btn-dc" target="_blank" rel="noopener" title="Discord"><i class="fa-brands fa-discord"></i></a>
           <a href="https://t.me/SG_efootball1"              class="social-btn social-btn-tg" target="_blank" rel="noopener" title="Telegram"><i class="fa-brands fa-telegram"></i></a>
         </div>
       </div>
