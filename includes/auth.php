@@ -83,10 +83,11 @@ function adminLogin(string $email, string $password): array
 }
 
 function _setAuthCookie(string $email, bool $remember = false): void {
-    $days  = $remember ? 30 : 1;
-    $value = _cookieSign(['email' => $email, 'ts' => time()]);
+    // remember=true → دائم (10 سنوات) | بدونها → يوم واحد
+    $expires = $remember ? time() + 86400 * 3650 : time() + 86400;
+    $value   = _cookieSign(['email' => $email, 'ts' => time()]);
     setcookie(AUTH_COOKIE, $value, [
-        'expires'  => time() + 86400 * $days,
+        'expires'  => $expires,
         'path'     => '/',
         'httponly' => true,
         'samesite' => 'Lax',
