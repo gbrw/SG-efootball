@@ -95,14 +95,8 @@ $adminNav = [
     .tb-img-btn:hover { border-color: var(--cyan); background: rgba(34,211,238,.12); color: var(--cyan); }
   </style>
 
-  <!-- Prevent dark/light flash -->
-  <script>
-    (function(){
-      var t = localStorage.getItem('sg-theme') ||
-              (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-      document.documentElement.setAttribute('data-theme', t);
-    })();
-  </script>
+  <!-- وضع نهاري دائم للوحة التحكم -->
+  <script>document.documentElement.setAttribute('data-theme','light');</script>
 </head>
 <body<?php if (isset($bodyMode)) echo ' data-mode="' . h($bodyMode) . '"'; ?>>
 
@@ -130,13 +124,6 @@ $adminNav = [
     </nav>
 
     <div class="admin-sidebar-footer">
-      <!-- Dark / Light toggle -->
-      <button class="btn btn-ghost btn-sm" id="theme-toggle"
-              style="width:100%;justify-content:flex-start;gap:.6rem;"
-              aria-label="تغيير المظهر">
-        <i class="fa-solid fa-moon"></i>
-        <span data-theme-label>الوضع الليلي</span>
-      </button>
       <!-- Logout -->
       <form action="/admin/logout" method="POST">
         <button type="submit" class="btn btn-danger btn-sm"

@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$email || !$password) {
         $error = 'الرجاء ملء جميع الحقول.';
     } else {
-        $result = adminLogin($email, $password);
+        $result = adminLogin($email, $password, !empty($_POST['remember']));
         if ($result['ok']) {
             header('Location: /admin/dashboard');
             exit;
@@ -101,6 +101,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </button>
           </div>
         </div>
+
+        <!-- تذكرني -->
+        <label style="display:flex;align-items:center;gap:.6rem;cursor:pointer;
+                      margin-bottom:1.25rem;font-size:.88rem;color:var(--text-muted);user-select:none;">
+          <input type="checkbox" name="remember" value="1"
+                 style="width:16px;height:16px;accent-color:var(--purple);cursor:pointer;"
+                 <?= !empty($_POST['remember']) ? 'checked' : '' ?>>
+          تذكرني لمدة 30 يوماً
+        </label>
 
         <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
           <i class="fa-solid fa-right-to-bracket"></i> دخول

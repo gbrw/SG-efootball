@@ -61,7 +61,7 @@
         fd.append('image', file);
         window.showToast && showToast('جارٍ رفع الصورة…', 'info');
 
-        fetch('/admin/upload.php', { method: 'POST', body: fd })
+        fetch('/admin/upload', { method: 'POST', body: fd })
           .then(function (r) { return r.json(); })
           .then(function (data) {
             if (data.url) {
