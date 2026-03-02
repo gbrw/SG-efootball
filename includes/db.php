@@ -16,8 +16,9 @@ function db(): PDO
         PDO::ATTR_EMULATE_PREPARES   => false,
     ];
 
-    // 1) MYSQL_URL (set manually as reference var in Railway PHP service)
-    $mysqlUrl = $_ENV['MYSQL_URL'] ?? getenv('MYSQL_URL') ?: null;
+    // 1) MYSQL_URL or MYSQL_PUBLIC_URL (Railway MySQL service vars)
+    $mysqlUrl = $_ENV['MYSQL_URL']        ?? getenv('MYSQL_URL')        ?:
+               ($_ENV['MYSQL_PUBLIC_URL'] ?? getenv('MYSQL_PUBLIC_URL') ?: null);
 
     if ($mysqlUrl) {
         $p    = parse_url($mysqlUrl);
