@@ -58,7 +58,6 @@ if (preg_match('#^/admin/([a-z]+)(?:\.php)?/?$#', $uri, $m)) {
     $page = $m[1];
     $file = $root . '/admin/' . $page . '.php';
     if (file_exists($file)) {
-        chdir($root . '/admin');
         require $file;
         exit;
     }

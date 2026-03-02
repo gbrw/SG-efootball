@@ -6,6 +6,7 @@ $currentUri = $_SERVER['REQUEST_URI'] ?? '';
 $adminNav = [
     '/admin/dashboard' => ['icon' => 'fa-solid fa-gauge',        'label' => 'الرئيسية'],
     '/admin/create'    => ['icon' => 'fa-solid fa-pen-to-square', 'label' => 'منشور جديد'],
+    '/admin/settings'  => ['icon' => 'fa-solid fa-gear',          'label' => 'الإعدادات'],
 ];
 ?>
 <!DOCTYPE html>
