@@ -23,9 +23,11 @@ function db(): PDO
         $host = $p['host'];
         $port = $p['port'] ?? 5432;
         $name = ltrim($p['path'], '/');
-        $user = $p['user'];
-        $pass = $p['pass'] ?? '';
+        $user = rawurldecode($p['user']);
+        $pass = rawurldecode($p['pass'] ?? '');
+        // sslmode=require + disable_prepared_statements for pgBouncer compatibility
         $dsn  = "pgsql:host={$host};port={$port};dbname={$name};sslmode=require";
+        $opts[PDO::ATTR_EMULATE_PREPARES] = true;  // required for pgBouncer transaction mode
     } else {
         // MySQL for local development
         $dsn  = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4;port=' . DB_PORT;
