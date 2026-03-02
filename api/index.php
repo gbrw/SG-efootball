@@ -3,13 +3,19 @@
  * Vercel PHP Router
  * يوجّه جميع الطلبات إلى الملف المناسب في جذر المشروع.
  */
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+error_reporting(E_ALL);
 
 // ── جذر المشروع (المجلد الأعلى من api/) ─────────────────────────────────
 $root = dirname(__DIR__);
 
+// ── ضمان أن require_once يعمل من الجذر ────────────────────────────────────
+chdir($root);
+
 // ── المسار المطلوب ────────────────────────────────────────────────────────
-$uri  = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$uri  = '/' . trim($uri, '/');
+$uri  = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+$uri  = '/' . trim((string)$uri, '/');
 
 // ── 1. ملفات ثابتة (صور، CSS، JS) — Vercel يخدمها مباشرةً ────────────────
 //    لكن احتياطاً نعيد التوجيه إن وصل هنا
