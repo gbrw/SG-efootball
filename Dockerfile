@@ -16,8 +16,8 @@ RUN apt-get update && apt-get install -y \
 # ── Enable mod_rewrite ────────────────────────────────────────────
 RUN a2enmod rewrite
 
-# ── Virtual host: index.php first, AllowOverride All ──────────────
-RUN echo '<VirtualHost *:80>\n\
+# ── Virtual host config ───────────────────────────────────────────
+RUN echo '<VirtualHost *:${PORT}>\n\
     DocumentRoot /var/www/html\n\
     DirectoryIndex index.php index.html\n\
     <Directory /var/www/html>\n\
@@ -31,6 +31,10 @@ COPY . /var/www/html/
 RUN rm -f /var/www/html/index.html \
     && chown -R www-data:www-data /var/www/html
 
+# ── Entrypoint: set Apache to listen on Railway $PORT ─────────────
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 EXPOSE 80
 
-CMD ["apache2ctl", "-D", "FOREGROUND"]
+CMD ["/usr/local/bin/docker-entrypoint.sh"]
