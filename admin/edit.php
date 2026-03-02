@@ -85,7 +85,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Upsert translations
             $sql = "INSERT INTO post_translations (post_id, language, title, slug, content)
                     VALUES (:pid, :lang, :title, :slug, :content)
-                    ON DUPLICATE KEY UPDATE title=VALUES(title), slug=VALUES(slug), content=VALUES(content)";
+                    ON CONFLICT (post_id, language) DO UPDATE
+                    SET title = EXCLUDED.title,
+                        slug  = EXCLUDED.slug,
+                        content = EXCLUDED.content";
             $stmtT = $pdo->prepare($sql);
             foreach (['ar', 'en'] as $lang) {
                 $stmtT->execute([
