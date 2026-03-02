@@ -4,8 +4,8 @@ $adminTitle = isset($pageTitle) ? h($pageTitle) . ' — لوحة التحكم' :
 $currentUri = $_SERVER['REQUEST_URI'] ?? '';
 
 $adminNav = [
-    '/admin/dashboard.php' => ['icon' => 'fa-solid fa-gauge',        'label' => 'الرئيسية'],
-    '/admin/create.php'    => ['icon' => 'fa-solid fa-pen-to-square', 'label' => 'منشور جديد'],
+    '/admin/dashboard' => ['icon' => 'fa-solid fa-gauge',        'label' => 'الرئيسية'],
+    '/admin/create'    => ['icon' => 'fa-solid fa-pen-to-square', 'label' => 'منشور جديد'],
 ];
 ?>
 <!DOCTYPE html>
@@ -24,7 +24,7 @@ $adminNav = [
   <!-- Font Awesome 6 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
 
-  <link rel="stylesheet" href="/assets/css/style.css?v=<?= filemtime($_SERVER['DOCUMENT_ROOT'].'/assets/css/style.css') ?>">
+  <link rel="stylesheet" href="/assets/css/style.css">
 
   <style>
     /* Admin always uses Cairo for Arabic UX */
@@ -137,7 +137,7 @@ $adminNav = [
         <span data-theme-label>الوضع الليلي</span>
       </button>
       <!-- Logout -->
-      <form action="/admin/logout.php" method="POST">
+      <form action="/admin/logout" method="POST">
         <button type="submit" class="btn btn-danger btn-sm"
                 style="width:100%;justify-content:flex-start;gap:.6rem;">
           <i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج

@@ -3,6 +3,7 @@
  * Vercel PHP Router
  * يوجّه جميع الطلبات إلى الملف المناسب في جذر المشروع.
  */
+ob_start();
 ini_set('display_errors', '0');
 ini_set('log_errors', '1');
 error_reporting(E_ALL);
