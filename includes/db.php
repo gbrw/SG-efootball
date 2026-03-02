@@ -16,7 +16,7 @@ function db(): PDO
         PDO::ATTR_EMULATE_PREPARES   => false,
     ];
 
-    // Railway MySQL plugin يولد MYSQL_URL تلقائياً
+    // 1) MYSQL_URL (set manually as reference var in Railway PHP service)
     $mysqlUrl = $_ENV['MYSQL_URL'] ?? getenv('MYSQL_URL') ?: null;
 
     if ($mysqlUrl) {
@@ -27,8 +27,18 @@ function db(): PDO
         $user = rawurldecode($p['user']);
         $pass = rawurldecode($p['pass'] ?? '');
         $dsn  = "mysql:host={$host};port={$port};dbname={$name};charset=utf8mb4";
+    } elseif (!empty($_ENV['MYSQLHOST'] ?? getenv('MYSQLHOST'))) {
+        // 2) Railway individual MySQL env vars (MYSQLHOST, MYSQLPASSWORD, etc.)
+        $host = $_ENV['MYSQLHOST']     ?? getenv('MYSQLHOST');
+        $port = $_ENV['MYSQLPORT']     ?? getenv('MYSQLPORT') ?: 3306;
+        $name = $_ENV['MYSQLDATABASE'] ?? getenv('MYSQLDATABASE') ?: (
+                $_ENV['MYSQL_DATABASE'] ?? getenv('MYSQL_DATABASE') ?: 'railway');
+        $user = $_ENV['MYSQLUSER']     ?? getenv('MYSQLUSER') ?: 'root';
+        $pass = $_ENV['MYSQLPASSWORD'] ?? getenv('MYSQLPASSWORD') ?:
+                ($_ENV['MYSQL_ROOT_PASSWORD'] ?? getenv('MYSQL_ROOT_PASSWORD') ?: '');
+        $dsn  = "mysql:host={$host};port={$port};dbname={$name};charset=utf8mb4";
     } else {
-        // Local development via DB_* variables
+        // 3) Local development via DB_* variables
         $dsn  = 'mysql:host=' . DB_HOST . ';port=' . DB_PORT . ';dbname=' . DB_NAME . ';charset=utf8mb4';
         $user = DB_USER;
         $pass = DB_PASS;
